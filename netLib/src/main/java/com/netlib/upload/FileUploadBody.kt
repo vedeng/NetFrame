@@ -52,8 +52,8 @@ class FileUploadBody(private val requestBody: RequestBody, private val file: Fil
             var read: Int
             val handler = Handler(Looper.getMainLooper())
             while (ins.read(buffer).also { read = it } != -1) { // update progress on UI thread
-                handler.post(ProgressUpdater(uploaded, contentLength()))
                 uploaded += read.toLong()
+                handler.post(ProgressUpdater(uploaded, contentLength()))
                 sink.write(buffer, 0, read)
             }
         }
