@@ -6,6 +6,7 @@ import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.POST
+import retrofit2.http.Url
 
 /**
  * Retrofit调用的API
@@ -15,7 +16,8 @@ interface API {
     @POST("app/appUrl")
     fun requestAppBaseUrl(@Body body: RequestBody): Call<AppBaseUrlResponse>
 
-    @POST("app/update")
-    fun requestCheckUpdate(@Body body: RequestBody): Call<CheckUpdateResponse>
+    // Url 写在方法体中，POST注解就不能加Url了。
+    @POST
+    fun requestCheckUpdate(@Url url: String, @Body body: RequestBody): Call<CheckUpdateResponse>
 
 }

@@ -1,6 +1,10 @@
 package com.netlib
 
-import com.blankj.utilcode.util.ToastUtils
+import android.annotation.SuppressLint
+import android.app.Application
+import android.content.Context
+import android.util.Log
+import android.widget.Toast
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
@@ -69,26 +73,45 @@ abstract class BaseCallback<T>(private var toastFlag: Boolean = true) : Callback
     open fun onBusinessException(exception: Exception, response: T?) {
         // 通用处理业务异常
         (response as? BaseResponse)?.code?.run { }
-        if (toastFlag) response.run { ToastUtils.showShort((response as? BaseResponse)?.message) }
+        response.run { showLog((response as? BaseResponse)?.message ?: "业务异常") }
     }
 
     /** 数据结构异常 */
     open fun onDataStructureException(exception: Exception, response: T?) {
-        if (toastFlag) ToastUtils.showShort(exception.desc.plus("：\n").plus(response?.toString()))
+        showLog(exception.desc.plus("：\n").plus(response?.toString()))
     }
 
     /** 响应码异常    正常范围为[200..300) */
     open fun onResponseCodeException(exception: Exception, errorBody: ResponseBody?) {
-        if (toastFlag) ToastUtils.showShort("服务器异常，请稍后再试")
+        showLog("服务器异常，请稍后再试")
     }
 
     /** 网络异常 */
     open fun onNetworkException(exception: Exception, t: Throwable) {
-        if (toastFlag) ToastUtils.showShort(exception.desc.plus("，请检查网络"))
+        showLog(exception.desc.plus("，请检查网络"))
     }
 
     /** 未处理异常 */
     open fun onUnhandledException(exception: Exception, t: Throwable) {
-        if (toastFlag) ToastUtils.showShort(exception.desc.plus("：\n").plus(t.localizedMessage))
+        showLog(exception.desc.plus("：\n").plus(t.localizedMessage))
     }
+
+    // 错误日志打印
+    open fun showLog(msg: String?) {
+        Log.e("Callback-Exception: ", "$msg")
+        if (toastFlag) showShort(msg)
+    }
+
+    open fun showShort(msg: String?) {
+        Toast.makeText(reflectContext(), msg, Toast.LENGTH_SHORT).show()
+    }
+
+    @SuppressLint("PrivateApi")
+    private fun reflectContext() : Context? {
+        val activityThread = Class.forName("android.app.ActivityThread")
+        val thread = activityThread.getMethod("currentActivityThread").invoke(null)
+        val app = activityThread.getMethod("getApplication").invoke(thread)
+        return app as? Application
+    }
+
 }

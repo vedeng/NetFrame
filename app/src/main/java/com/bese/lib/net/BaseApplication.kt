@@ -4,6 +4,7 @@ import android.app.Application
 import com.netlib.APICreator
 
 class BaseApplication : Application() {
+
     override fun onCreate() {
         super.onCreate()
 
@@ -20,7 +21,7 @@ class BaseApplication : Application() {
         // APICreator.init("http://127.0.0.1/", enableHttps = false)
 
         // Simple Init
-        APICreator.init("https://mock.yonyoucloud.com/mock/3936/")
+        APICreator.init(NetTool.BaseUrl)
 
     }
 

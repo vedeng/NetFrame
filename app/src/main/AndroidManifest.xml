@@ -17,6 +17,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".NetRequestActivity"
+            android:launchMode="singleTop"/>
+        <activity android:name=".NetRequestWithWDActivity"
+            android:launchMode="singleTop"/>
+        <activity android:name=".NetRequestWithLCActivity"
+            android:launchMode="singleTop"/>
     </application>
 
 </manifest>

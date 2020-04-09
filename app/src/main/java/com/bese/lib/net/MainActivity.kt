@@ -1,11 +1,9 @@
 package com.bese.lib.net
 
-import androidx.appcompat.app.AppCompatActivity
+import android.content.Intent
 import android.os.Bundle
-import com.bese.lib.net.request.AppBaseUrlRequest
-import com.bese.lib.net.response.AppBaseUrlResponse
-import com.blankj.utilcode.util.ToastUtils
-import com.netlib.BaseCallback
+import androidx.appcompat.app.AppCompatActivity
+import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -13,19 +11,18 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        replaceBaseUrl()
-    }
+        tv_normal?.setOnClickListener {
+            startActivity(Intent(this, NetRequestActivity::class.java))
+        }
 
+        tv_net_wd?.setOnClickListener {
+            startActivity(Intent(this, NetRequestWithWDActivity::class.java))
+        }
 
-    private fun replaceBaseUrl() {
-        AppBaseUrlRequest().request(AppBaseUrlRequest.Param("1"), object : BaseCallback<AppBaseUrlResponse>() {
-            override fun onSuccess(response: AppBaseUrlResponse?) {
-                response?.data?.appUrl?.run {
-                    ToastUtils.showShort(this)
-                }
-            }
+        tv_net_lc?.setOnClickListener {
+            startActivity(Intent(this, NetRequestWithLCActivity::class.java))
+        }
 
-        })
     }
 
 }

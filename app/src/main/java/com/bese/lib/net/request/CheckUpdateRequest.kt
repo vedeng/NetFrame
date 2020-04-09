@@ -8,9 +8,9 @@ import retrofit2.Call
 /**
  * desc: 检查更新接口
  */
-class CheckUpdateRequest : BaseRequest<Any, CheckUpdateResponse>() {
+class CheckUpdateRequest(var url: String) : BaseRequest<Any, CheckUpdateResponse>() {
     override fun getCall(): Call<CheckUpdateResponse> {
-        return NetTool.getApi().requestCheckUpdate(getRequestBody())
+        return NetTool.getApi().requestCheckUpdate(url, getRequestBody())
     }
     data class Param(var version: String?)
 }

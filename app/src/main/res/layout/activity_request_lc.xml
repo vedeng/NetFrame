@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#eeeeee"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="带Load容器的网络请求"
+            android:layout_margin="10dp"
+            android:textSize="16sp"
+            android:padding="8dp"/>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
+
+        <TextView
+            android:id="@+id/explain"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/rct_sld_r15"
+            android:backgroundTint="#cc66cc"
+            android:padding="5dp"
+            android:layout_marginEnd="10dp"
+            android:text="  用法说明  "/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="#f5f5f5"
+        android:gravity="end">
+
+        <TextView
+            android:id="@+id/send"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:padding="5dp"
+            android:text="  发起请求  "
+            android:textSize="12sp"
+            android:background="@drawable/rct_sld_r15"
+            android:backgroundTint="#ffff00"/>
+
+        <TextView
+            android:id="@+id/send_error"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:padding="5dp"
+            android:gravity="center"
+            android:text="  DATA错误  "
+            android:textSize="12sp"
+            android:background="@drawable/rct_sld_r15"
+            android:backgroundTint="#ffff00"/>
+
+        <TextView
+            android:id="@+id/send_no_net"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:padding="5dp"
+            android:gravity="center"
+            android:text="  NET错误  "
+            android:textSize="12sp"
+            android:background="@drawable/rct_sld_r15"
+            android:backgroundTint="#ffff00"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="#0099ff">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="6dp"
+            android:layout_marginBottom="10dp"
+            android:text="这里是容器外部"
+            android:textColor="#ffffff"/>
+
+        <com.netlib.container.LoadContainer
+            android:id="@+id/load_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="6dp"
+            android:background="#ffffff"
+            tools:context=".MainActivity">
+
+            <TextView
+                android:id="@+id/version_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="100dp"
+                android:gravity="center"
+                android:layout_gravity="center_horizontal"
+                android:text="这里是容器的内容，\n 服务端最新版本是：\n -"/>
+
+        </com.netlib.container.LoadContainer>
+
+    </LinearLayout>
+
+</LinearLayout>
