@@ -7,7 +7,7 @@ import okhttp3.ResponseBody
 /**
  * 网络请求回调，封装了各种状态下的错误页面展示
  */
-open class CallBackWithLC<T>(private var lc: BaseLoadContainer) : BaseCallback<T>(true) {
+open class CallBackWithLC<T>(private var lc: BaseLoadContainer, private var toastFlag: Boolean = false) : BaseCallback<T>(toastFlag) {
     @CallSuper
     override fun onSuccess(response: T?) {
         lc.showContent()

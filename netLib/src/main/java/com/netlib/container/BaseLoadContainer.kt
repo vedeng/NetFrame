@@ -15,27 +15,19 @@ abstract class BaseLoadContainer(context: Context, attrs: AttributeSet?) : Frame
 
     var contentView: View? = null
     abstract var loadingView: View
-    abstract var emptyView: View
     abstract var errorView: View
-    abstract var netErrorView: View
     var showing: View? = null
 
     override fun onFinishInflate() {
         super.onFinishInflate()
-//        contentView
+        // contentView
         check(childCount == 1) { "LoadContainer有且只能有一个ContentView" }
         contentView = getChildAt(0)
         showing = contentView
-//        emptyView
-        emptyView.visibility = View.GONE
-        addView(emptyView)
-//        errorView
+        // errorView
         errorView.visibility = View.GONE
         addView(errorView)
-//        netErrorView
-        netErrorView.visibility = View.GONE
-        addView(netErrorView)
-//        loadingView
+        // loadingView
         loadingView.visibility = View.GONE
         addView(loadingView)
     }
@@ -56,16 +48,17 @@ abstract class BaseLoadContainer(context: Context, attrs: AttributeSet?) : Frame
         show(contentView)
     }
 
-    fun showEmpty() {
-        show(emptyView)
-    }
-
-    fun showError() {
+    open fun showEmpty() {
         show(errorView)
     }
 
-    fun showNetError() {
-        show(netErrorView)
+    open fun showError() {
+        errorView
+        show(errorView)
+    }
+
+    open fun showNetError() {
+        show(errorView)
     }
 
     interface OnLoadListener {

@@ -34,6 +34,7 @@ abstract class BaseCallback<T>(private var toastFlag: Boolean = true) : Callback
                 // 根据success字段判断业务是否成功
                 if ((response.body() as BaseResponse).success == true) {
                     onSuccess(response.body())
+                    onLoadEnd(true)
                 } else {
                     onException(Exception.Business, response.body())
                 }
@@ -67,6 +68,7 @@ abstract class BaseCallback<T>(private var toastFlag: Boolean = true) : Callback
             Exception.Network -> onNetworkException(exception, content as Throwable)
             Exception.Unhandled -> onUnhandledException(exception, content as Throwable)
         }
+        onLoadEnd(false)
     }
 
     /** 业务异常 */
@@ -114,4 +116,10 @@ abstract class BaseCallback<T>(private var toastFlag: Boolean = true) : Callback
         return app as? Application
     }
 
+    /**
+     * 如果有特殊处理，如loading结束隐藏 等，可以统一回调，无需分别对成功和失败做处理
+     *      调用时机为 其他函数处理结束，最后调用LoadEnd
+     *  @param isSuccess 告知子方法，该请求是否成功
+     */
+    open fun onLoadEnd(isSuccess: Boolean?) { }
 }
