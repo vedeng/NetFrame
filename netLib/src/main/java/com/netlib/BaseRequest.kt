@@ -80,13 +80,13 @@ abstract class BaseRequest<T, R>(private var TAG: Any? = null) {
     /**
      * 异步请求
      */
-    fun request(param: T?, callback: BaseCallback<R>) {
+    fun request(param: T?, netCallback: BaseNetCallback<R>) {
         mParam = param
         mCall = getCall()
         TAG?.run { mCall?.request()?.newBuilder()?.tag(this) }
 
         /** 进队 开始异步请求 */
-        mCall?.enqueue(callback)
+        mCall?.enqueue(netCallback)
     }
 
     /**

@@ -7,35 +7,35 @@ import okhttp3.ResponseBody
 /**
  * 网络请求回调，封装了各种状态下的错误页面展示
  */
-open class CallBackWithLC<T>(private var lc: BaseLoadContainer, private var toastFlag: Boolean = false) : BaseCallback<T>(toastFlag) {
+open class CallBackWithLC<T>(private var lc: BaseLoadContainer, private var toastFlag: Boolean = false) : BaseNetCallback<T>(toastFlag) {
     @CallSuper
     override fun onSuccess(response: T?) {
         lc.showContent()
     }
 
-    override fun onBusinessException(exception: Exception, response: T?) {
+    override fun onBusinessException(netException: NetException, response: T?) {
         lc.showError()
-        super.onBusinessException(exception, response)
+        super.onBusinessException(netException, response)
     }
 
-    override fun onDataStructureException(exception: Exception, response: T?) {
+    override fun onDataStructureException(netException: NetException, response: T?) {
         lc.showError()
-        super.onDataStructureException(exception, response)
+        super.onDataStructureException(netException, response)
     }
 
-    override fun onResponseCodeException(exception: Exception, errorBody: ResponseBody?) {
+    override fun onResponseCodeException(netException: NetException, errorBody: ResponseBody?) {
         lc.showError()
-        super.onResponseCodeException(exception, errorBody)
+        super.onResponseCodeException(netException, errorBody)
     }
 
-    override fun onNetworkException(exception: Exception, t: Throwable) {
+    override fun onNetworkException(netException: NetException, t: Throwable) {
         lc.showNetError()
-        super.onNetworkException(exception, t)
+        super.onNetworkException(netException, t)
     }
 
-    override fun onUnhandledException(exception: Exception, t: Throwable) {
+    override fun onUnhandledException(netException: NetException, t: Throwable) {
         lc.showError()
-        super.onUnhandledException(exception, t)
+        super.onUnhandledException(netException, t)
     }
 
 }

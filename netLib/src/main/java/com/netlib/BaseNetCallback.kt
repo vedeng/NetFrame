@@ -17,8 +17,8 @@ import java.net.UnknownHostException
 /**
  * 回调基类
  */
-abstract class BaseCallback<T>(private var toastFlag: Boolean = true) : Callback<T> {
-    enum class Exception(var desc: String) {
+abstract class BaseNetCallback<T>(private var toastFlag: Boolean = true) : Callback<T> {
+    enum class NetException(var desc: String) {
         Business("业务异常"),
         DataStructure("数据结构异常"),
         ResponseCode("响应码异常"),
@@ -30,27 +30,18 @@ abstract class BaseCallback<T>(private var toastFlag: Boolean = true) : Callback
         // retrofit2根据响应码是否在区间[200, 300)判断响应是否成功
         if (response.isSuccessful) {
             // 检查数据结构是否符合约定
-            if (response.body() is BaseResponse) {
-                // 根据success字段判断业务是否成功
-                if ((response.body() as BaseResponse).success == true) {
-                    onSuccess(response.body())
-                    onLoadEnd(true)
-                } else {
-                    onException(Exception.Business, response.body())
-                }
-            } else {
-                onException(Exception.DataStructure, response.body())
-            }
+            onSuccess(response.body())
+            onLoadEnd(true)
         } else {
-            onException(Exception.ResponseCode, response.errorBody())
+            onException(NetException.ResponseCode, response.errorBody())
         }
     }
 
     override fun onFailure(call: Call<T>, t: Throwable) {
         if (t is ConnectException || t is UnknownHostException || t is HttpException || t is InterruptedIOException) {
-            onException(Exception.Network, t)
+            onException(NetException.Network, t)
         } else {
-            onException(Exception.Unhandled, t)
+            onException(NetException.Unhandled, t)
         }
     }
 
@@ -60,42 +51,42 @@ abstract class BaseCallback<T>(private var toastFlag: Boolean = true) : Callback
 
     /** 异常回调 转发 */
     @Suppress("UNCHECKED_CAST")
-    open fun onException(exception: Exception, content: Any?) {
-        when (exception) {
-            Exception.Business -> onBusinessException(exception, content as T?)
-            Exception.DataStructure -> onDataStructureException(exception, content as T?)
-            Exception.ResponseCode -> onResponseCodeException(exception, content as ResponseBody?)
-            Exception.Network -> onNetworkException(exception, content as Throwable)
-            Exception.Unhandled -> onUnhandledException(exception, content as Throwable)
+    open fun onException(netException: NetException, content: Any?) {
+        when (netException) {
+            NetException.Business -> onBusinessException(netException, content as T?)
+            NetException.DataStructure -> onDataStructureException(netException, content as T?)
+            NetException.ResponseCode -> onResponseCodeException(netException, content as ResponseBody?)
+            NetException.Network -> onNetworkException(netException, content as Throwable)
+            NetException.Unhandled -> onUnhandledException(netException, content as Throwable)
         }
         onLoadEnd(false)
     }
 
     /** 业务异常 */
-    open fun onBusinessException(exception: Exception, response: T?) {
+    open fun onBusinessException(netException: NetException, response: T?) {
         // 通用处理业务异常
         (response as? BaseResponse)?.code?.run { }
         response.run { showLog((response as? BaseResponse)?.message ?: "业务异常") }
     }
 
     /** 数据结构异常 */
-    open fun onDataStructureException(exception: Exception, response: T?) {
-        showLog(exception.desc.plus("：\n").plus(response?.toString()))
+    open fun onDataStructureException(netException: NetException, response: T?) {
+        showLog(netException.desc.plus("：\n").plus(response?.toString()))
     }
 
     /** 响应码异常    正常范围为[200..300) */
-    open fun onResponseCodeException(exception: Exception, errorBody: ResponseBody?) {
+    open fun onResponseCodeException(netException: NetException, errorBody: ResponseBody?) {
         showLog("服务器异常，请稍后再试")
     }
 
     /** 网络异常 */
-    open fun onNetworkException(exception: Exception, t: Throwable) {
-        showLog(exception.desc.plus("，请检查网络"))
+    open fun onNetworkException(netException: NetException, t: Throwable) {
+        showLog(netException.desc.plus("，请检查网络"))
     }
 
     /** 未处理异常 */
-    open fun onUnhandledException(exception: Exception, t: Throwable) {
-        showLog(exception.desc.plus("：\n").plus(t.localizedMessage))
+    open fun onUnhandledException(netException: NetException, t: Throwable) {
+        showLog(netException.desc.plus("：\n").plus(t.localizedMessage))
     }
 
     // 错误日志打印

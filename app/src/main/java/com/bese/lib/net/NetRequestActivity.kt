@@ -5,7 +5,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.bese.lib.net.request.AppBaseUrlRequest
 import com.bese.lib.net.response.AppBaseUrlResponse
-import com.netlib.BaseCallback
+import com.netlib.BaseNetCallback
 import kotlinx.android.synthetic.main.activity_request.*
 
 class NetRequestActivity : AppCompatActivity() {
@@ -21,7 +21,7 @@ class NetRequestActivity : AppCompatActivity() {
     }
 
     private fun replaceBaseUrl() {
-        AppBaseUrlRequest().request(AppBaseUrlRequest.Param("1"), object : BaseCallback<AppBaseUrlResponse>() {
+        AppBaseUrlRequest().request(AppBaseUrlRequest.Param("1"), object : BaseNetCallback<AppBaseUrlResponse>() {
             override fun onSuccess(response: AppBaseUrlResponse?) {
                 response?.data?.appUrl?.run {
                     Toast.makeText(this@NetRequestActivity, "返回的域名：$this", Toast.LENGTH_SHORT).show()

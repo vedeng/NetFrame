@@ -5,7 +5,7 @@ import androidx.annotation.CallSuper
 /**
  * 根据网络请求回调，加入加载框展示
  */
-open class CallBackWithWD<T>(private var waitingDialog: WaitingDialog?) : BaseCallback<T>() {
+open class CallBackWithWD<T>(private var waitingDialog: WaitingDialog?) : BaseNetCallback<T>() {
 
     init {
         waitingDialog?.show()
@@ -16,8 +16,8 @@ open class CallBackWithWD<T>(private var waitingDialog: WaitingDialog?) : BaseCa
         waitingDialog?.dismiss()
     }
 
-    override fun onException(exception: Exception, content: Any?) {
-        super.onException(exception, content)
+    override fun onException(netException: NetException, content: Any?) {
+        super.onException(netException, content)
         waitingDialog?.dismiss()
     }
 }
